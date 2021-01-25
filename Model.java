@@ -48,19 +48,15 @@ public class Model {
     }
 
     public static ArrayList<String> parseArtistsNames(JsonArray array) {
-        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<>(array.size());
         for (int i = 0; i < array.size(); i++) {
             JsonObject song = array.get(i).getAsJsonObject();
-
-            StringBuilder artistsBuilder = new StringBuilder("[");
             JsonArray artistsArray = song.get("artists").getAsJsonArray();
+            String[] names = new String[artistsArray.size()];
             for (int j = 0; j < artistsArray.size(); j++) {
-                artistsBuilder.append(getName(artistsArray.get(j).getAsJsonObject()))
-                        .append(", ");
+                names[j] = getName(artistsArray.get(j).getAsJsonObject());
             }
-            artistsBuilder.delete(artistsBuilder.length() - 2, artistsBuilder.length()); //deletes last ", "
-            artistsBuilder.append("]");
-            result.add(artistsBuilder.toString());
+            result.add(Arrays.toString(names));
         }
         return result;
     }
